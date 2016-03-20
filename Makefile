@@ -9,7 +9,9 @@ INCLUDES = libft/includes
 SRC_PATH = ./src/
 
 SRC_NAME = main.c\
-		   get_info.c
+		   get_info.c\
+		   init_env.c\
+		   gnlv.c
 
 SRC = $(addprefix $(SRC_PATH),$(SRC_NAME))
 
@@ -31,7 +33,7 @@ $(NAME) : $(OBJ)
 
 $(OBJ_PATH)%.o : $(SRC_PATH)%.c
 	@mkdir -p $(OBJ_PATH)
-	gcc $(FLAGS) -o $@ -c $< -I $(INCLUDES)
+	gcc $(FLAGS) -o $@ -c $< -I $(INCLUDES) -I include/.
 
 clean :
 	rm -fr $(OBJ_PATH)

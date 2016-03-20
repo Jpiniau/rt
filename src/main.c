@@ -6,13 +6,14 @@
 /*   By: jpiniau <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/18 15:22:26 by jpiniau           #+#    #+#             */
-/*   Updated: 2016/03/18 18:47:24 by jpiniau          ###   ########.fr       */
+/*   Updated: 2016/03/20 21:29:41 by jpiniau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <fcntl.h>
 #include "get_next_line.h"
 #include "libft.h"
+#include "rt.h"
 
 char *get_info(char *line, char **dst);
 
@@ -60,22 +61,21 @@ char	*get_file(char *filename)
 
 int		main(int ac, char **av)
 {
-//	char	*file;
 //	char	*scene;
-	char	*content;
-	char	*name;
+//	char	*content;
+//	char	*name;
+	t_env	env;
 
 	(void)ac;
 	(void)av;
-//	file = get_file(av[1]);
-//	ft_putendl(file);
-//	scene = get_scene(file);
-//	ft_putendl(scene);
-//	ft_putstr("\n");
-//	content	= get_content(file);
-//	ft_putendl(content);
-	name = get_info("name(bla bla bla)dfg", &content);
-	ft_putendl(name);
-	ft_putendl(content);
+	//scene = get_scene(file);
+	//ft_putendl(scene);
+	//ft_putstr("\n");
+	//content	= get_content(file);
+	//ft_putendl(content);
+	//name = get_info("name(bla bla bla)dfg", &content);
+	//ft_putendl(name);
+	//ft_putendl(content);
+	init_env(&env, av[1]);
 	return (0);
 }

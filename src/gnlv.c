@@ -1,26 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_info.c                                         :+:      :+:    :+:   */
+/*   gnlv.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jpiniau <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/03/18 18:25:14 by jpiniau           #+#    #+#             */
-/*   Updated: 2016/03/20 21:29:54 by jpiniau          ###   ########.fr       */
+/*   Created: 2016/03/20 19:35:09 by jpiniau           #+#    #+#             */
+/*   Updated: 2016/03/20 21:19:39 by jpiniau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*get_info(char *line, char **dst)
+int			gnlv(char *src, char **line)
 {
-	char	*name;
-	int		in;
-	int		out;
+	static size_t		i = 0;
+	size_t		endl;
 
-	in = ft_strcchr(line, '(');
-	out = ft_strcchr(line, ')');
-	name = ft_strndup(line, in);
-	*dst = ft_strndup(line + in + 1, out - in - 1);
-	return (name);
+	endl = ft_strcchr(src + i, '\n');
+	if ((int)endl == -1)
+	{
+		*line = ft_strnew(ft_strlen(src + i));
+		*line = ft_strcpy(*line, src + i);
+		return (-1);
+	}
+	endl += i;
+	*line = ft_strnew(endl);
+	*line = ft_strncpy(*line, src + i, endl);
+	i = endl + 1;
+	return (endl);
 }
