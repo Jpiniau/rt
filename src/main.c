@@ -6,13 +6,10 @@
 /*   By: jpiniau <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/18 15:22:26 by jpiniau           #+#    #+#             */
-/*   Updated: 2016/03/20 21:29:41 by jpiniau          ###   ########.fr       */
+/*   Updated: 2016/03/23 19:14:05 by jpiniau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <fcntl.h>
-#include "get_next_line.h"
-#include "libft.h"
 #include "rt.h"
 
 char *get_info(char *line, char **dst);
@@ -59,11 +56,20 @@ char	*get_file(char *filename)
 	return (tmp);
 }
 
+int		ft_key_hook(int keycode, t_env *env) //static
+{
+		(void)env;
+		ft_putnbr(keycode);
+		if (keycode == 53)
+			exit(0);
+		return (0);
+}
+
 int		main(int ac, char **av)
 {
-//	char	*scene;
-//	char	*content;
-//	char	*name;
+	//	char	*scene;
+	//	char	*content;
+	//	char	*name;
 	t_env	env;
 
 	(void)ac;
@@ -76,6 +82,13 @@ int		main(int ac, char **av)
 	//name = get_info("name(bla bla bla)dfg", &content);
 	//ft_putendl(name);
 	//ft_putendl(content);
+	ft_putchar('u');
 	init_env(&env, av[1]);
+	init_content(&env, av[1]);
+	env.mlx = mlx_init();
+	env.win = mlx_new_window(env.mlx, env.height, env.width, env.name);
+	env.img = mlx_new_image(env.mlx, env.height, env.width);
+	mlx_key_hook(env.win, ft_key_hook, &env);
+	mlx_loop(env.mlx);
 	return (0);
 }

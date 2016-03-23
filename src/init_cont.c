@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_env.c                                         :+:      :+:    :+:   */
+/*   init_cont.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jpiniau <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/03/20 17:58:15 by jpiniau           #+#    #+#             */
-/*   Updated: 2016/03/23 17:39:58 by jpiniau          ###   ########.fr       */
+/*   Created: 2016/03/23 17:41:02 by jpiniau           #+#    #+#             */
+/*   Updated: 2016/03/23 19:14:06 by jpiniau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,12 @@ static void		set_var(t_env *env, char *var, char *val)
 		env->height = ft_atoi(tmp[0]);
 		env->width = ft_atoi(tmp[1]);
 	}
+	ft_putstr(var);
+	ft_putstr(" : ");
+	ft_putendl(val);
 }
 
-static void		set_scene(t_env *env, char *scene)
+static void		set_content(t_env *env, char *scene)
 {
 	char	*line;
 	char	*var;
@@ -55,14 +58,15 @@ static void		set_scene(t_env *env, char *scene)
 	set_var(env, ft_strtrim(var), val);
 }
 
-static void		get_scene(char *file, char **scene)
+static void		get_content(char *file, char **content)
 {
 	int		i;
 
-	*scene = ft_strdup(ft_strstr(file, "scene\n["));
-	i = ft_strcchr(*scene, ']') - 1;
-	*scene = ft_strncpy(*scene, *scene, i);
-	*scene = *scene + 8;
+
+	*content = ft_strdup(ft_strstr(file, "content\n["));
+	i = ft_strcchr(*content, ']') - 1;
+	*content = ft_strncpy(*content, *content, i);
+	*content = *content + 10;
 }
 
 static void		get_file(char *filename, char **file)
@@ -81,13 +85,16 @@ static void		get_file(char *filename, char **file)
 	}
 }
 
-void	init_env(t_env *env, char *filename)
+void	init_content(t_env *env, char *filename)
 {
-	char *file;
-	char *scene;
+	char	*file;
+	char	*content;
+//	char	*obj;
 
 	(void)env;
 	get_file(filename, &file);
-	get_scene(file, &scene);
-	set_scene(env, scene);
+	get_content(file, &content);
+	set_content(env, content);
+//	get_one_obj(content, $obj);
+//	set_obj(env, obj);
 }
