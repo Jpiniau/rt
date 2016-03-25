@@ -6,12 +6,12 @@
 /*   By: jpiniau <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/23 17:41:02 by jpiniau           #+#    #+#             */
-/*   Updated: 2016/03/23 19:14:06 by jpiniau          ###   ########.fr       */
+/*   Updated: 2016/03/25 20:09:20 by jpiniau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
-
+/*
 static void		set_var(t_env *env, char *var, char *val)
 {
 	char	**tmp;
@@ -42,7 +42,8 @@ static void		set_var(t_env *env, char *var, char *val)
 	ft_putstr(" : ");
 	ft_putendl(val);
 }
-
+*/
+/*
 static void		set_content(t_env *env, char *scene)
 {
 	char	*line;
@@ -57,7 +58,7 @@ static void		set_content(t_env *env, char *scene)
 	var = get_info(line, &val);
 	set_var(env, ft_strtrim(var), val);
 }
-
+*/
 static void		get_content(char *file, char **content)
 {
 	int		i;
@@ -67,6 +68,15 @@ static void		get_content(char *file, char **content)
 	i = ft_strcchr(*content, ']') - 1;
 	*content = ft_strncpy(*content, *content, i);
 	*content = *content + 10;
+}
+
+static char		*get_one_obj(char *content, char **obj)
+{
+	char	*ref;
+
+	(void)obj;
+	ref = ft_strndup(ft_strstr(content, "object(") + 7, ft_strcchr(content, ')') - 8);
+	return (ref);
 }
 
 static void		get_file(char *filename, char **file)
@@ -89,12 +99,12 @@ void	init_content(t_env *env, char *filename)
 {
 	char	*file;
 	char	*content;
-//	char	*obj;
+	char	*obj;
 
 	(void)env;
 	get_file(filename, &file);
 	get_content(file, &content);
-	set_content(env, content);
-//	get_one_obj(content, $obj);
+//	set_content(env, content);
+	ft_putstr(get_one_obj(content, &obj));
 //	set_obj(env, obj);
 }

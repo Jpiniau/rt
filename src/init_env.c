@@ -6,7 +6,7 @@
 /*   By: jpiniau <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/20 17:58:15 by jpiniau           #+#    #+#             */
-/*   Updated: 2016/03/23 17:39:58 by jpiniau          ###   ########.fr       */
+/*   Updated: 2016/03/25 20:04:42 by jpiniau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@ static void		set_var(t_env *env, char *var, char *val)
 	char	**tmp;
 
 	if (!ft_strcmp(var, "name"))
+	{
 		env->name = val;
+	}
 	if (!ft_strcmp(var, "cam_pos"))
 	{
 		tmp = ft_strsplit(val, ' ');
@@ -57,12 +59,13 @@ static void		set_scene(t_env *env, char *scene)
 
 static void		get_scene(char *file, char **scene)
 {
-	int		i;
+	char	*in;
+	int		out;
 
-	*scene = ft_strdup(ft_strstr(file, "scene\n["));
-	i = ft_strcchr(*scene, ']') - 1;
-	*scene = ft_strncpy(*scene, *scene, i);
-	*scene = *scene + 8;
+	in = NULL;
+	in = ft_strchr(ft_strchr(ft_strstr(file, "scene\n["), '['), '\n') + 1;
+	out = ft_strcchr(in, ']') - 1;
+	*scene = ft_strndup(in, out) ;
 }
 
 static void		get_file(char *filename, char **file)
@@ -71,14 +74,9 @@ static void		get_file(char *filename, char **file)
 	char	*line;
 
 	fd = open(filename, O_RDONLY);
-	*file = ft_strnew(0);
-	if (fd >= 0)
-	{
-		while (get_next_line(fd, &line))
-			*file = ft_strjoin3(*file, line, "\n");
-		close(fd);
-		free(line);
-	}
+	while (get_next_line(fd, &line))
+		*file = ft_strjoin3(*file, line, "\n");
+	close(fd);
 }
 
 void	init_env(t_env *env, char *filename)
@@ -86,7 +84,6 @@ void	init_env(t_env *env, char *filename)
 	char *file;
 	char *scene;
 
-	(void)env;
 	get_file(filename, &file);
 	get_scene(file, &scene);
 	set_scene(env, scene);

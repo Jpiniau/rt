@@ -6,14 +6,14 @@
 /*   By: jpiniau <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/24 17:55:35 by jpiniau           #+#    #+#             */
-/*   Updated: 2014/12/12 14:56:16 by jpiniau          ###   ########.fr       */
+/*   Updated: 2016/03/25 18:35:53 by jpiniau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# define BUFF_SIZE 1
+# define BUFF_SIZE 10
 
 # include <string.h>
 # include <sys/types.h>

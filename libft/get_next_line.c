@@ -6,7 +6,7 @@
 /*   By: jpiniau <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/12 14:56:01 by jpiniau           #+#    #+#             */
-/*   Updated: 2015/10/28 16:25:36 by jpiniau          ###   ########.fr       */
+/*   Updated: 2016/03/25 19:25:46 by jpiniau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ static void	*ft_realloc(void *ptr, size_t size)
 {
 	void	*ptr2;
 
-	ptr2 = ft_memalloc(size);
-	ft_memcpy(ptr2, ptr, size);
+	ptr2 = (char *)ft_memalloc(size * sizeof(char));
+	ft_strncpy(ptr2, ptr, size);
 	ptr = NULL;
 	return (ptr2);
 }
@@ -42,14 +42,14 @@ static int	ft_fill_line(char **line, char **buf, int ret)
 	{
 		*line = ft_strndup(*buf, n);
 		*buf += n + 1;
-		return (1);
 	}
 	else
 	{
-		*line = ft_strndup(*buf, ft_strlen(*buf));
+		*line = ft_strdup(*buf);
 		ft_strclr(*buf);
-		return (1);
+		*buf = NULL;
 	}
+		return (1);
 }
 
 int			get_next_line(int const fd, char **line)
@@ -63,7 +63,7 @@ int			get_next_line(int const fd, char **line)
 	ret = 1;
 	if (buf[fd] == NULL && line != NULL)
 		buf[fd] = (char *)ft_memalloc(sizeof(char) * BUFF_SIZE + 1);
-	if (buf[fd] == NULL || fd < 0 || *line == NULL)
+	if (buf[fd] == NULL || fd < 0 || line == NULL)
 		return (-1);
 	size = 1 + ft_strlen(buf[fd]);
 	while ((is_n = ft_strcchr(buf[fd], '\n')) == -1 && ret > 0)
