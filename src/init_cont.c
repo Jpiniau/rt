@@ -6,105 +6,105 @@
 /*   By: jpiniau <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/23 17:41:02 by jpiniau           #+#    #+#             */
-/*   Updated: 2016/03/25 20:09:20 by jpiniau          ###   ########.fr       */
+/*   Updated: 2016/03/26 18:11:07 by jpiniau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
-/*
-static void		set_var(t_env *env, char *var, char *val)
-{
-	char	**tmp;
 
-	if (!ft_strcmp(var, "name"))
-		env->name = val;
-	if (!ft_strcmp(var, "cam_pos"))
-	{
-		tmp = ft_strsplit(val, ' ');
-		env->cam_pos.x = ft_atoi(tmp[0]);
-		env->cam_pos.y = ft_atoi(tmp[1]);
-		env->cam_pos.z = ft_atoi(tmp[2]);
-	}
-	if (!ft_strcmp(var, "cam_dir"))
-	{
-		tmp = ft_strsplit(val, ' ');
-		env->cam_dir.x = ft_atoi(tmp[0]);
-		env->cam_dir.y = ft_atoi(tmp[1]);
-		env->cam_dir.z = ft_atoi(tmp[2]);
-	}
-	if (!ft_strcmp(var, "render"))
-	{
-		tmp = ft_strsplit(val, ' ');
-		env->height = ft_atoi(tmp[0]);
-		env->width = ft_atoi(tmp[1]);
-	}
-	ft_putstr(var);
-	ft_putstr(" : ");
-	ft_putendl(val);
+t_obj	*objnew(t_obj *obj)
+{
+	t_obj	*ret;
+
+	ret = (t_obj *)malloc(sizeof(t_obj));
+	ret->size = obj->size;
+	ret->power = obj->power;
+	ret->ref = obj->ref;
+	ret->pos = obj->pos;
+	ret->rot = obj->rot;
+	ret->color = obj->color;
+	return (ret);
 }
-*/
-/*
-static void		set_content(t_env *env, char *scene)
-{
-	char	*line;
-	char	*var;
-	char	*val;
 
-	while(gnlv(scene, &line) != -1)
+void	objpushback(t_env *e, t_obj *obj)
+{
+	t_obj	*obje;
+
+	obje = e->obj;
+	if (obje)
+	{
+		while (obje->next)
+			obje = obje->next;
+		obje->next = objnew(obj);
+	}
+	else
+		e->obj = objnew(obj);
+}
+
+static void		set_var(char *var, char *val, t_obj *obj)
+{
+	char			**tmp;
+
+	if (!ft_strcmp(var, "object"))
+		obj->ref = val;
+	if (!ft_strcmp(var, "pos"))
+	{
+		tmp = ft_strsplit(val, ' ');
+		obj->pos.x = ft_atoi(tmp[0]);
+		obj->pos.y = ft_atoi(tmp[1]);
+		obj->pos.z = ft_atoi(tmp[2]);
+	}
+	if (!ft_strcmp(var, "color"))
+	{
+		tmp = ft_strsplit(val, ' ');
+		obj->color.x = ft_atoi(tmp[0]);
+		obj->color.y = ft_atoi(tmp[1]);
+		obj->color.z = ft_atoi(tmp[2]);
+	}
+	if (!ft_strcmp(var, "size"))
+	{
+		obj->size = ft_atoi(val);
+	}
+}
+
+static void		set_content(t_env *env, char *line)
+{
+	char			*var;
+	char			*val;
+	static t_obj	obj;
+
+	(void)env;
+	if (ft_strcmp(ft_strtrim(line), "{") && ft_strcmp(ft_strtrim(line), "}"))
 	{
 		var = get_info(line, &val);
-		set_var(env, ft_strtrim(var), val);
+		set_var(ft_strtrim(var), val, &obj);
 	}
-	var = get_info(line, &val);
-	set_var(env, ft_strtrim(var), val);
-}
-*/
-static void		get_content(char *file, char **content)
-{
-	int		i;
-
-
-	*content = ft_strdup(ft_strstr(file, "content\n["));
-	i = ft_strcchr(*content, ']') - 1;
-	*content = ft_strncpy(*content, *content, i);
-	*content = *content + 10;
+	if (!ft_strcmp(ft_strtrim(line), "}"))
+		objpushback(env, &obj);
 }
 
-static char		*get_one_obj(char *content, char **obj)
-{
-	char	*ref;
-
-	(void)obj;
-	ref = ft_strndup(ft_strstr(content, "object(") + 7, ft_strcchr(content, ')') - 8);
-	return (ref);
-}
-
-static void		get_file(char *filename, char **file)
+void			init_content(t_env *env, char *filename)
 {
 	int		fd;
+	int		content;
 	char	*line;
 
+	content = 0;
 	fd = open(filename, O_RDONLY);
-	*file = ft_strnew(0);
 	if (fd >= 0)
 	{
 		while (get_next_line(fd, &line))
-			*file = ft_strjoin3(*file, line, "\n");
+		{
+			if (content == 2 && !ft_strcmp(line, "]"))
+				content = 3;
+			if (content == 2)
+				set_content(env, line);
+			if (!ft_strcmp(line, "content"))
+				content = 1;
+			if (content && !ft_strcmp(line, "["))
+				content = 2;
+		}
 		close(fd);
 		free(line);
 	}
-}
-
-void	init_content(t_env *env, char *filename)
-{
-	char	*file;
-	char	*content;
-	char	*obj;
-
-	(void)env;
-	get_file(filename, &file);
-	get_content(file, &content);
-//	set_content(env, content);
-	ft_putstr(get_one_obj(content, &obj));
-//	set_obj(env, obj);
 }
