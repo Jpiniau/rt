@@ -1,0 +1,4 @@
+	name(demo)
+	cam_pos(30 5 10)
+	cam_dir(0 1 0)
+	render(640 480)

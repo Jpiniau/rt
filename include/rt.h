@@ -6,7 +6,7 @@
 /*   By: jpiniau <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/20 17:27:34 by jpiniau           #+#    #+#             */
-/*   Updated: 2016/03/23 18:12:06 by jpiniau          ###   ########.fr       */
+/*   Updated: 2016/03/26 16:51:38 by jpiniau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ typedef struct			s_obj
 	t_3int				color;
 	double				size;
 	double				power;
-	double				ref;
+	char				*ref;
 	struct s_obj		*next;
 }						t_obj;
 
