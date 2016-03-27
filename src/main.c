@@ -6,7 +6,7 @@
 /*   By: jpiniau <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/18 15:22:26 by jpiniau           #+#    #+#             */
-/*   Updated: 2016/03/26 19:19:32 by jpiniau          ###   ########.fr       */
+/*   Updated: 2016/03/27 20:16:06 by jpiniau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,17 +35,21 @@ void	affich_obj(t_env env)
 	}
 }
 
-int		main(int ac, char **av)
+static void		ft_init_mlx(t_env *env)
+{
+	env->mlx = mlx_init();
+	env->win = mlx_new_window(env->mlx, env->height, env->width, env->name);
+	env->img = mlx_new_image(env->mlx, env->height, env->width);
+}
+
+int				main(int ac, char **av)
 {
 	t_env	env;
 
 	(void)ac;
 	init_env(&env, av[1]);
-	ft_putendl("PLANTE STP FDP!!");
 	init_content(&env, av[1]);
-	env.mlx = mlx_init();
-	env.win = mlx_new_window(env.mlx, env.height, env.width, env.name);
-	env.img = mlx_new_image(env.mlx, env.height, env.width);
+	ft_init_mlx(&env);
 	mlx_key_hook(env.win, ft_key_hook, &env);
 	mlx_loop(env.mlx);
 	return (0);

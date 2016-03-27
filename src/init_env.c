@@ -6,7 +6,7 @@
 /*   By: jpiniau <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/20 17:58:15 by jpiniau           #+#    #+#             */
-/*   Updated: 2016/03/26 18:10:10 by jpiniau          ###   ########.fr       */
+/*   Updated: 2016/03/27 16:02:58 by jpiniau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@ static void		set_var(t_env *env, char *var, char *val)
 	char	**tmp;
 
 	if (!ft_strcmp(var, "name"))
-		env->name = val;
+	{
+		env->name = ft_strdup(val);
+	}
 	if (!ft_strcmp(var, "cam_pos"))
 	{
 		tmp = ft_strsplit(val, ' ');
