@@ -6,20 +6,20 @@
 /*   By: jpiniau <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/05 16:02:34 by jpiniau           #+#    #+#             */
-/*   Updated: 2016/03/05 16:44:30 by jpiniau          ###   ########.fr       */
+/*   Updated: 2016/03/31 16:49:55 by jpiniau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fractol.h"
+#include "rt.h"
 
-int		ft_pixel_put(t_env *env, int color)
+int		ft_pixel_put(t_env *env, int x, int y, int color)
 {
 	unsigned int	bytes;
 	unsigned int	d;
 	size_t			j;
 
 	bytes = env->data_img.bpp / 8;
-	d = env->f.x * bytes + env->f.y * env->data_img.sizeline;
+	d = x * bytes + y * env->data_img.sizeline;
 	j = -1;
 	while (++j < bytes)
 	{

@@ -6,21 +6,31 @@
 /*   By: jpiniau <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/18 15:22:26 by jpiniau           #+#    #+#             */
-/*   Updated: 2016/03/27 20:16:06 by jpiniau          ###   ########.fr       */
+/*   Updated: 2016/03/31 16:51:34 by jpiniau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-char *get_info(char *line, char **dst);
-
-int		ft_key_hook(int keycode, t_env *env) //static
+static void		ft_get_data(t_env *e)
 {
-		(void)env;
-		ft_putnbr(keycode);
-		if (keycode == 53)
-			exit(0);
-		return (0);
+	int		bpp;
+	int		sizeline;
+	int		endian;
+
+	e->data = mlx_get_data_addr(e->img, &bpp, &sizeline, &endian);
+	e->data_img.bpp = bpp;
+	e->data_img.sizeline = sizeline;
+	e->data_img.endian = endian;
+}
+
+static int		ft_key_hook(int keycode, t_env *env) //static
+{
+	(void)env;
+	ft_putnbr(keycode);
+	if (keycode == 53)
+		exit(0);
+	return (0);
 }
 
 void	affich_obj(t_env env)
@@ -50,6 +60,8 @@ int				main(int ac, char **av)
 	init_env(&env, av[1]);
 	init_content(&env, av[1]);
 	ft_init_mlx(&env);
+	ft_get_data(&env);
+	scene(&env);
 	mlx_key_hook(env.win, ft_key_hook, &env);
 	mlx_loop(env.mlx);
 	return (0);

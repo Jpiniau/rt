@@ -14,6 +14,10 @@ SRC_NAME = main.c\
 		   get_info.c\
 		   init_env.c\
 		   init_cont.c\
+		   intersect_circle.c\
+		   intersect.c\
+		   scene.c\
+		   ft_pixel_put.c\
 		   gnlv.c
 
 SRC = $(addprefix $(SRC_PATH),$(SRC_NAME))
