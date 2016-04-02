@@ -6,7 +6,7 @@
 /*   By: jpiniau <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/31 15:55:03 by jpiniau           #+#    #+#             */
-/*   Updated: 2016/03/31 18:17:09 by jpiniau          ###   ########.fr       */
+/*   Updated: 2016/04/02 15:27:19 by jpiniau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,12 @@ t_obj		*intersect(t_env *env, t_obj *obj, int x, int y)
 		{
 			//t_tmp = intersect_cylinder(env, obj, x, y);
 		}
-		if (tobj == NULL && t_tmp > 0)
+		if (tobj == NULL && t_tmp >= 0)
 		{
 			t = t_tmp;
 			tobj = obj;
 		}
-		else if (t_tmp > 0)
+		else if (t_tmp >= 0)
 		{
 			if (t > t_tmp)
 			{
