@@ -6,7 +6,7 @@
 /*   By: jpiniau <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/23 17:41:02 by jpiniau           #+#    #+#             */
-/*   Updated: 2016/03/31 18:41:44 by jpiniau          ###   ########.fr       */
+/*   Updated: 2016/04/20 20:18:11 by jpiniau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_obj	*objnew(t_obj *obj)
 	ret->power = obj->power;
 	ret->ref = obj->ref;
 	ret->pos = obj->pos;
-	ret->rot = obj->rot;
+	ret->n = obj->n;
 	ret->color = obj->color;
 	return (ret);
 }
@@ -50,20 +50,25 @@ static void		set_var(char *var, char *val, t_obj *obj)
 	if (!ft_strcmp(var, "pos"))
 	{
 		tmp = ft_strsplit(val, ' ');
-		obj->pos.x = ft_atoi(tmp[0]);
-		obj->pos.y = ft_atoi(tmp[1]);
-		obj->pos.z = ft_atoi(tmp[2]);
+		obj->pos.x = (float)ft_atoi(tmp[0]);
+		obj->pos.y = (float)ft_atoi(tmp[1]);
+		obj->pos.z = (float)ft_atoi(tmp[2]);
 	}
 	if (!ft_strcmp(var, "color"))
 	{
 		tmp = ft_strsplit(val, ' ');
-		obj->color.x = ft_atoi(tmp[0]);
-		obj->color.y = ft_atoi(tmp[1]);
-		obj->color.z = ft_atoi(tmp[2]);
+		obj->color.x = (float)ft_atoi(tmp[0]);
+		obj->color.y = (float)ft_atoi(tmp[1]);
+		obj->color.z = (float)ft_atoi(tmp[2]);
 	}
 	if (!ft_strcmp(var, "size"))
-	{
 		obj->size = ft_atoi(val);
+	if (!ft_strcmp(var, "n"))
+	{
+		tmp = ft_strsplit(val, ' ');
+		obj->n.x = (float)ft_atoi(tmp[0]);
+		obj->n.y = (float)ft_atoi(tmp[1]);
+		obj->n.z = (float)ft_atoi(tmp[2]);
 	}
 }
 
