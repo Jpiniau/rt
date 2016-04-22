@@ -10,21 +10,27 @@ SRC_PATH = ./src/
 
 SRC_NAME = main.c\
 		   get_info.c\
+		   get_normal.c\
 		   init_env.c\
 		   init_cont.c\
 		   init_vec3.c\
 		   init_ray.c\
+		   init_shadow_ray.c\
 		   intersect_circle.c\
 		   intersect_plane.c\
 		   intersect_cylinder.c\
+		   intersect_cone.c\
 		   intersect.c\
 		   intersect_point.c\
+		   intersect_light.c\
+		   intersect_shadow.c\
 		   scene.c\
 		   ft_pixel_put.c\
 		   gnlv.c\
 		   distance.c\
 		   normalize.c\
 		   add_vec3.c\
+		   sus_vec3.c\
 		   dot_product.c
 
 SRC = $(addprefix $(SRC_PATH),$(SRC_NAME))

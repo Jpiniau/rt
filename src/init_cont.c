@@ -6,11 +6,19 @@
 /*   By: jpiniau <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/23 17:41:02 by jpiniau           #+#    #+#             */
-/*   Updated: 2016/04/20 20:18:11 by jpiniau          ###   ########.fr       */
+/*   Updated: 2016/04/22 16:30:56 by jpiniau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
+#include <math.h>
+
+#include <stdio.h>
+
+void	ft_put(t_obj *ret)
+{
+	printf("\n ref: %s \n size: %f \n power: %f \n pos: x: %f y: %f z: %f \n n: x: %f y: %f z: %f \n color : %f %f %f \n angle : %f\n",ret->ref ,ret->size, ret->power, ret->pos.x, ret->pos.y, ret->pos.z, ret->n.x, ret->n.y, ret->n.z, ret->color.x, ret->color.y, ret->color.z, ret->angle);
+}
 
 t_obj	*objnew(t_obj *obj)
 {
@@ -22,8 +30,19 @@ t_obj	*objnew(t_obj *obj)
 	ret->ref = obj->ref;
 	ret->pos = obj->pos;
 	ret->n = obj->n;
+	normalize(&ret->n);
 	ret->color = obj->color;
+	ret->angle = obj->angle;
+	ft_put(ret);
 	return (ret);
+}
+
+
+void	ft_invvec3(t_obj *obj)
+{
+	obj->pos.x *= -1;
+	obj->pos.y *= -1;
+	obj->pos.z *= -1;
 }
 
 void	objpushback(t_env *e, t_obj *obj)
@@ -53,6 +72,8 @@ static void		set_var(char *var, char *val, t_obj *obj)
 		obj->pos.x = (float)ft_atoi(tmp[0]);
 		obj->pos.y = (float)ft_atoi(tmp[1]);
 		obj->pos.z = (float)ft_atoi(tmp[2]);
+		if (!ft_strcmp(obj->ref, "cylinder") || !ft_strcmp(obj->ref, "cone"))
+			ft_invvec3(obj);
 	}
 	if (!ft_strcmp(var, "color"))
 	{
@@ -63,6 +84,11 @@ static void		set_var(char *var, char *val, t_obj *obj)
 	}
 	if (!ft_strcmp(var, "size"))
 		obj->size = ft_atoi(val);
+	if (!ft_strcmp(var, "angle"))
+	{
+		obj->angle = (float)tan((float)ft_atoi(val));
+		printf("\n\n\n angle: %f \n\n\n", obj->angle);
+	}
 	if (!ft_strcmp(var, "n"))
 	{
 		tmp = ft_strsplit(val, ' ');

@@ -16,5 +16,7 @@ float	intersect_cylinder(t_ray *ray, t_obj *cylinder)
 	if (delta < 0)
 		return (-1);
 	else
+	{
 		return (intersect_point(a, b, delta));
+	}
 }
