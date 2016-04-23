@@ -6,7 +6,7 @@
 /*   By: jpiniau <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/20 17:27:34 by jpiniau           #+#    #+#             */
-/*   Updated: 2016/04/22 17:45:40 by jpiniau          ###   ########.fr       */
+/*   Updated: 2016/04/23 18:44:11 by jpiniau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ typedef struct			s_env
 	t_vec3				cam_pos;
 	t_vec3				cam_dir;
 	t_obj				*obj;
+	t_obj				*light;
 	char				*name;
 }						t_env;
 
@@ -88,7 +89,8 @@ float					intersect_cylinder(t_ray *ray, t_obj *cylinder);
 float					intersect_cone(t_ray *ray, t_obj *cone);
 float					intersect_point(float a, float b, float delta);
 t_obj					*intersect_shadow(t_ray *ray, t_obj *obj, t_light *light);
-float					intersect_light(t_vec3 point, t_ray *ray, t_obj *obj, t_light light);
+//float					intersect_light(t_vec3 point, t_ray *ray, t_obj *obj, t_light light);
+float					light(t_vec3 point, t_ray *ray, t_obj *obj, t_obj *light);
 int						scene(t_env *env);
 int						ft_pixel_put(t_env *e, int x, int y,int color);
 float					distance(t_vec3 *a);

@@ -6,7 +6,7 @@
 /*   By: jpiniau <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/23 17:41:02 by jpiniau           #+#    #+#             */
-/*   Updated: 2016/04/22 16:30:56 by jpiniau          ###   ########.fr       */
+/*   Updated: 2016/04/23 18:39:38 by jpiniau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ t_obj	*objnew(t_obj *obj)
 	normalize(&ret->n);
 	ret->color = obj->color;
 	ret->angle = obj->angle;
-	ft_put(ret);
 	return (ret);
 }
 
@@ -49,7 +48,10 @@ void	objpushback(t_env *e, t_obj *obj)
 {
 	t_obj	*obje;
 
-	obje = e->obj;
+	if (!ft_strcmp(obj->ref, "light"))
+		obje = e->light;
+	else
+		obje = e->obj;
 	if (obje)
 	{
 		while (obje->next)
@@ -85,10 +87,7 @@ static void		set_var(char *var, char *val, t_obj *obj)
 	if (!ft_strcmp(var, "size"))
 		obj->size = ft_atoi(val);
 	if (!ft_strcmp(var, "angle"))
-	{
 		obj->angle = (float)tan((float)ft_atoi(val));
-		printf("\n\n\n angle: %f \n\n\n", obj->angle);
-	}
 	if (!ft_strcmp(var, "n"))
 	{
 		tmp = ft_strsplit(val, ' ');
@@ -111,7 +110,7 @@ static void		set_content(t_env *env, char *line)
 		set_var(ft_strtrim(var), val, &obj);
 	}
 	if (!ft_strcmp(ft_strtrim(line), "}"))
-		objpushback(env, &obj);
+			objpushback(env, &obj);
 }
 
 void			init_content(t_env *env, char *filename)

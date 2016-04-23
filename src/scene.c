@@ -6,7 +6,7 @@
 /*   By: jpiniau <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/31 15:40:14 by jpiniau           #+#    #+#             */
-/*   Updated: 2016/04/22 19:27:38 by jpiniau          ###   ########.fr       */
+/*   Updated: 2016/04/23 18:04:00 by jpiniau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int scene(t_env *env)
 	t_light	light;
 	t_vec3	point;
 
-	init_vec3(&(light.pos), 0, 0, -35);
+	init_vec3(&(light.pos), -8, 10, -20);
 	x = -1;
 	obj = NULL;
 	while (++x < env->width)
@@ -57,7 +57,8 @@ int scene(t_env *env)
 				if (intersect_shadow(&ray2, obj, &light) != NULL)
 					ft_pixel_put(env, x, y, ambient_color(rgb_hex(obj->color.x, obj->color.y, obj->color.z)));
 				else
-					ft_pixel_put(env, x, y, intersect_light(point, &ray, obj, light));
+					//ft_pixel_put(env, x, y, intersect_light(point, &ray, obj, light));
+					ft_pixel_put(env, x, y, light(point, &ray, obj, env->light));
 					//ft_pixel_put(env, x, y, rgb_hex(obj->color.x, obj->color.y, obj->color.z));
 			}
 			else
