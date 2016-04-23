@@ -24,13 +24,13 @@ static t_vec3	vecmf(t_vec3 a, float b)
 	return (result);
 }
 
-static float	reflect(t_vec3 point, t_ray *ray, t_vec3 n, t_light light)
+static float	reflect(t_vec3 point, t_ray *ray, t_vec3 n, t_obj *light)
 {
 	t_vec3	r;
 	t_vec3	l;
 	float	refl;
 
-	sus_vec3(&light.pos, &point, &l);
+	sus_vec3(&light->pos, &point, &l);
 	normalize(&l);
 	r = vecsvec(l, vecmf(n, 2 * dot_product(&n, &l)));
 	normalize(&r);
@@ -40,55 +40,50 @@ static float	reflect(t_vec3 point, t_ray *ray, t_vec3 n, t_light light)
 	return (pow(refl, 500));
 }
 
-static float	*intersect_light(t_vec3 point, t_ray *ray, t_obj *obj, t_light light)
+static float	intersect_light(t_vec3 point, t_ray *ray, t_obj *obj, t_obj *light)
 {
 	float		dif;
 	float		refl;
-	float		tmp[3];
+	float		rgb[3];
 	t_vec3		dis;
 	t_vec3		normal;
 
-	tmp[0] = 0;
-	tmp[1] = 0;
-	tmp[2] = 0;
-	sus_vec3(&light.pos, &point, &dis);
+	sus_vec3(&light->pos, &point, &dis);
 	normalize(&dis);
 	if (get_normal(&normal, obj, &point, ray))
-		return (tmp);
+		return (rgb_int(obj->color.x, obj->color.y, obj->color.z));
 	dif = dot_product(&dis, &normal);
 	refl = reflect(point, ray, normal, light);
 	dif = dif < 0 ? 0 : dif;
 	dif = dif > 1 ? 1 : dif;
-	tmp[0] = dif;
-	tmp[1] = AMB;
-	tmp[2] = refl;
-	return (tmp);
+	rgb[0] = obj->color.x;
+	rgb[1] = obj->color.y;
+	rgb[2] = obj->color.z;
+	rgb[0] = rgb[0] * (dif + AMB) + refl * 200;
+	rgb[1] = rgb[1] * (dif + AMB) + refl * 200;
+	rgb[2] = rgb[2] * (dif + AMB) + refl * 200;
+	rgb[0] = rgb[0] > 255 ? 255 : rgb[0];
+	rgb[1] = rgb[1] > 255 ? 255 : rgb[1];
+	rgb[2] = rgb[2] > 255 ? 255 : rgb[2];
+	return (rgb_int(rgb[0], rgb[1], rgb[2]));
 }
 
 float			light(t_vec3 point, t_ray *ray, t_obj *obj, t_obj *light)
 {
-	float	*tmp;
-	float	final[3];
+	int		tmp;
 	int		rgb[3];
-	t_obj	*tobj;
 
-	final[0] = 0;
-	final[1] = 0;
-	final[2] = 0;
+	rgb[0] = 0;
+	rgb[1] = 0;
+	rgb[2] = 0;
 	while (light != NULL)
 	{
 		tmp = intersect_light(point, ray, obj, light);
-		final[0] += tmp[0];
-		final[1] += tmp[1];
-		final[2] += tmp[2];
+		rgb[2] += tmp & 255;
+		rgb[1] += tmp>>8 & 255;
+		rgb[0] += tmp>>16 & 255;
 		light = light->next;
 	}
-	rgb[0] = obj->color.x;
-	rgb[1] = obj->color.y;
-	rgb[2] = obj->color.z;
-	rgb[0] = rgb[0] * (final[0] + final[1]) + final[2] * 200;
-	rgb[1] = rgb[1] * (final[0] + final[1]) + final[2] * 200;
-	rgb[2] = rgb[2] * (final[0] + final[1]) + final[2] * 200;
 	rgb[0] = rgb[0] > 255 ? 255 : rgb[0];
 	rgb[1] = rgb[1] > 255 ? 255 : rgb[1];
 	rgb[2] = rgb[2] > 255 ? 255 : rgb[2];
